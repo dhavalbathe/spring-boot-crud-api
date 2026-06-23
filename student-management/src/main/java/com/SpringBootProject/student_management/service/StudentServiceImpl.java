@@ -13,6 +13,15 @@ import java.util.List;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
+
+    private StudentResponseDto mapToResponseDto(Student student) {
+        return StudentResponseDto.builder()
+                .id(student.getId())
+                .name(student.getName())
+                .email(student.getEmail())
+                .age(student.getAge())
+                .build();
+    }
     @Override
     public StudentResponseDto createStudent(Student student) {
         Student createdStudent = studentRepository.save(student);
@@ -27,11 +36,20 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentResponseDto getStudentById(Long id){
-        return null;
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+
+        return mapToResponseDto(student);
     }
 
+    @Override
     public List<StudentResponseDto> getAllStudents(){
-        return null;
+        List<Student> students = studentRepository.findAll();
+
+        return students.stream()
+                .map(this::mapToResponseDto)
+                .toList();
+
     }
     public StudentResponseDto updateStudent(Long id, Student student){
         return null;
