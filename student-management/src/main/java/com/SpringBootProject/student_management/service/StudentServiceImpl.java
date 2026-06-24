@@ -51,8 +51,16 @@ public class StudentServiceImpl implements StudentService {
                 .toList();
 
     }
-    public StudentResponseDto updateStudent(Long id, Student student){
-        return null;
+    public StudentResponseDto updateStudent(Long id, Student updatedStudent){
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found with id : " + id));
+        student.setName(updatedStudent.getName());
+        student.setEmail(updatedStudent.getEmail());
+        student.setAge(updatedStudent.getAge());
+
+        Student savedStudent = studentRepository.save(student);
+
+        return mapToResponseDto(savedStudent);
     }
     public void deleteStudent(Long id){
         return;
