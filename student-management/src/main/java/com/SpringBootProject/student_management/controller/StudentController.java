@@ -34,4 +34,10 @@ public class StudentController {
     public StudentResponseDto updateStudent(@PathVariable Long id,@RequestBody Student updatedStudent) {
         return studentService.updateStudent(id, updatedStudent);
     }
+
+    @DeleteMapping("/{id}")
+    public String deleteStudent(@PathVariable Long id) {
+        studentService.deleteStudent(id);
+        return "Student Record Deleted!";
+    }
 }
